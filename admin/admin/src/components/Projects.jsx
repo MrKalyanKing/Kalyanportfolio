@@ -1,16 +1,16 @@
-
-
-import React, { useContext, useState } from "react";
-import upload from '../assets/upload.jpg';
+import React, { useContext, useEffect, useState } from "react";
+import upload from "../assets/upload.jpg";
 import { AppContext } from "./Contextprovider";
-import { ToastContainer,toast } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import axios from 'axios'
+import axios from "axios";
 
 export function Projects() {
-  const url =useContext(AppContext)
+  const url = useContext(AppContext);
   const [image, setImage] = useState(null);
-  const [tags, setTags] = useState([]);  // Manage tags as an array of objects
+  const [tags, setTags] = useState([]);
+  const [project, setProject] = useState([]);
+  const [loading, setLodaing] = useState(true);
   const [data, setData] = useState({
     title: "",
     description: "",
@@ -19,6 +19,7 @@ export function Projects() {
   });
 
   // Handle changes for form fields
+  
   const handleChange = (e) => {
     const { target } = e;
     const { name, value } = target;
@@ -28,31 +29,55 @@ export function Projects() {
     });
   };
 
-  const handleErr=()=>{
-     toast.error("Project is not saved!", {
-          position: "bottom-right",
-          autoClose: 5000, // Close after 5 seconds
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });    
-  }
+  const handleErr = () => {
+    toast.error("Project is not saved!", {
+      position: "bottom-right",
+      autoClose: 2000, // Close after 5 seconds
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  };
+  const handleErrdelete = () => {
+    toast.error("Project is not saved!", {
+      position: "bottom-right",
+      autoClose: 2000, // Close after 5 seconds
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  };
 
-  const handleSucess=()=>{
-     toast.success("project added succcesfully!", {
-          position: "bottom-right",
-          autoClose: 5000, // Close after 5 seconds
-          hideProgressBar: false,
-          closeOnClick: true,
-          pauseOnHover: true,
-          draggable: true,
-          progress: undefined,
-          theme: "light",
-        });    
-  }
+  const handleSucess = () => {
+    toast.success("project added succcesfully!", {
+      position: "bottom-right",
+      autoClose: 2000, // Close after 5 seconds
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  };
+  const handleSucessdelete = () => {
+    toast.success("project added succcesfully!", {
+      position: "bottom-right",
+      autoClose: 2000, // Close after 5 seconds
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "light",
+    });
+  };
 
   // Handle adding a tech stack
   const handleTagAdd = () => {
@@ -63,19 +88,19 @@ export function Projects() {
       setTags([
         ...tags,
         {
-          id: Date.now(),  // Unique ID for the tag
+          id: Date.now(), // Unique ID for the tag
           name: techName,
           color: color,
         },
       ]);
-      document.getElementById("tech-name").value = '';  // Clear input field after adding the tag
-      document.getElementById("tech-color").value = '#000000';  // Clear color picker
+      document.getElementById("tech-name").value = ""; // Clear input field after adding the tag
+      document.getElementById("tech-color").value = "#000000"; // Clear color picker
     }
   };
 
   // Handle tag removal
   const handleTagRemove = (id) => {
-    setTags(tags.filter(tag => tag.id !== id));
+    setTags(tags.filter((tag) => tag.id !== id));
   };
 
   // Handle form submission
@@ -93,46 +118,91 @@ export function Projects() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     // Create a new FormData object
     const formData = new FormData();
-  
+
     // Append basic project fields
-    formData.append('title', data.title);
-    formData.append('description', data.description);
-    formData.append('githublink', data.githublink);
-    formData.append('previewlink', data.previewlink);
-  
+    formData.append("title", data.title);
+    formData.append("description", data.description);
+    formData.append("githublink", data.githublink);
+    formData.append("previewlink", data.previewlink);
+
     // Append tags (tech stack) as JSON string (to handle array of objects)
-    formData.append('tags', JSON.stringify(tags));  // Convert tags to JSON
-  
+    formData.append("tags", JSON.stringify(tags)); // Convert tags to JSON
+
     // Append the image file (if available)
     if (image) {
-      formData.append('image', image);
+      formData.append("image", image);
     }
-     console.log(formData.entries())
+   
     try {
       // Send the FormData to the backend via axios (POST request)
-      const response = await axios.post( "http://localhost:3000/api/project" , formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data', // Important for sending files
-        },
-      });
-      handleSucess()
+      const response = await axios.post(
+        `http://localhost:3000/api/project`,
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data", // Important for sending files
+          },
+        }
+      );
+      handleSucess();
       if (response.data.success) {
-       
-        console.log('Project saved successfully!');
+        console.log("Project saved successfully!");
       } else {
-        console.log('Failed to save project.');
-        handleErr()
+        console.log("Failed to save project.");
+        handleErr();
       }
     } catch (err) {
-      console.error('Error submitting form:', err);
-      handleErr()
+      console.error("Error submitting form:", err);
+      handleErr();
     }
   };
-  
 
+  // fetching the data
+
+  const projectfethc = async () => {
+    try {
+      const response = await axios.get(
+        'http://localhost:3000/api/show/project'
+      );
+     
+      if (response.data.success && Array.isArray(response.data.project)) {
+        setProject(response.data.project);
+        
+      } else {
+        handleErr();
+      }
+    } catch (err) {
+      handleErr();
+      console.log("data was not fetched ");
+      setLodaing(false);
+    }
+  };
+  // deleting the data
+   
+  const deleteproject=async (id)=>{
+    try{
+     const response = await fetch(`http://localhost:3000/api/delete/project/${id}`,
+     { "method": "DELETE" })
+
+     const result =await response.json()
+     if (result.success) {
+      handleSucessdelete()
+      setProject((prevReports) => prevReports.filter((report) => report._id !== id));
+    } else {
+      alert(`Error: ${result.message}`);
+      handleErrdelete()
+    }
+    }catch(err){
+      console.error(err);
+    }
+  }
+  useEffect(() => {
+    projectfethc();
+  }, []);
+  
   return (
     <div className="p-8">
       <div className="mb-8">
@@ -142,7 +212,9 @@ export function Projects() {
       <div className="bg-white rounded-xl p-8 shadow-sm">
         <form onSubmit={handleSubmit} className="space-y-6 max-w-3xl">
           <div>
-            <label className="block text-gray-700 font-medium mb-2">Title</label>
+            <label className="block text-gray-700 font-medium mb-2">
+              Title
+            </label>
             <input
               type="text"
               placeholder="Enter small title"
@@ -154,7 +226,9 @@ export function Projects() {
           </div>
 
           <div>
-            <label className="block text-gray-700 font-medium mb-2">Tags (Tech Stack)</label>
+            <label className="block text-gray-700 font-medium mb-2">
+              Tags (Tech Stack)
+            </label>
             <input
               type="text"
               id="tech-name"
@@ -194,7 +268,9 @@ export function Projects() {
           </div>
 
           <div>
-            <label className="block text-gray-700 font-medium mb-2">GitHub Link</label>
+            <label className="block text-gray-700 font-medium mb-2">
+              GitHub Link
+            </label>
             <input
               type="url"
               placeholder="Enter Github link"
@@ -206,7 +282,9 @@ export function Projects() {
           </div>
 
           <div>
-            <label className="block text-gray-700 font-medium mb-2">Project Live Preview Link</label>
+            <label className="block text-gray-700 font-medium mb-2">
+              Project Live Preview Link
+            </label>
             <input
               type="url"
               placeholder="Enter project URL"
@@ -218,7 +296,8 @@ export function Projects() {
           </div>
 
           <div className="description">
-            <label>Description</label><br></br>
+            <label>Description</label>
+            <br></br>
             <textarea
               name="description"
               rows="9"
@@ -231,7 +310,11 @@ export function Projects() {
           <div>
             <label className="block text-gray-700 font-medium mb-2">
               Project Images (first image will be shown as thumbnail)
-              <img src={image ? URL.createObjectURL(image) : upload} alt="upload" style={{ height: '90px', width: '140px' }} />
+              <img
+                src={image ? URL.createObjectURL(image) : upload}
+                alt="upload"
+                style={{ height: "90px", width: "140px" }}
+              />
             </label>
             <input
               type="file"
@@ -248,7 +331,87 @@ export function Projects() {
           </button>
         </form>
       </div>
-      <ToastContainer/>
+
+      {/* fetching the data */}
+
+      <div className="min-h-screen bg-gray-100 flex flex-col items-center">
+        <h2 className="text-3xl font-bold text-blue-600 mt-8">
+          Project Page {project.length}
+        </h2>
+        <div className="bg-white shadow-lg rounded-lg mt-6 w-full max-w-4xl p-6">
+          {project.length === 0 ? (
+            <p className="text-center text-gray-500">No Project available.</p>
+          ) : (
+            <table className="table-auto w-full border-collapse border border-gray-200">
+              <thead>
+                <tr className="bg-gray-200">
+                  <th className="border border-gray-300 px-4 py-2 text-left">
+                    TItle
+                  </th>
+                  <th className="border border-gray-300 px-4 py-2 text-left">
+                    Image
+                  </th>
+                  <th className="border border-gray-300 px-4 py-2 text-left">
+                    Description
+                  </th>
+                  <th className="border border-gray-300 px-4 py-2 text-center">
+                    PreviewLink
+                  </th>
+                  <td className="border border-gray-300 px-4 py-2">Delete</td>
+                </tr>
+              </thead>
+              <tbody>
+                {project.map((Projects) => (
+                  <tr key={Projects._id} className="hover:bg-gray-100">
+                    <td className="border border-gray-300 px-4 py-2">
+                      {Projects.title}
+                    </td>
+                    <td className="border border-gray-300 px-4 py-2">
+                      <img src={project.image} alt="image" style={{ maxWidth: '100%', height: 'auto' }} />
+                    </td>
+                    <td
+                      className="border border-gray-300 px-4 py-2"
+                      style={{
+                        display: "-webkit-box",
+                        WebkitBoxOrient: "vertical",
+                        WebkitLineClamp: 4,
+                        overflow: "hidden",
+                        textOverflow: "ellipsis",
+                      }}
+                    >
+                      {" "}
+                      {Projects.description}{" "}
+                    </td>
+                    <td className="border border-gray-300 px-4 py-2">
+                      {" "}
+                      <a
+                        href={Projects.previewlink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        style={{ color: "blue" }}
+                      >
+                        {" "}
+                        {Projects.previewlink}
+                      </a>
+                    </td>
+                    <td className="border border-gray-300 px-4 py-2 text-center">
+                      <button
+                        onClick={() => deleteproject(Projects._id)}
+                        className="bg-red-500 text-white px-4 py-1 rounded hover:bg-red-600"
+                      >
+                        Delete
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
+        <ToastContainer />
+      </div>
+
+      {/* closing the detched data  */}
     </div>
   );
 }

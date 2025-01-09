@@ -40,7 +40,7 @@ export function Dashboard() {
         <StatsCard
           icon={Sparkles}
           title="Skills"
-          value="5"
+          value="2"
           color="bg-cyan-500"
         />
       </div>

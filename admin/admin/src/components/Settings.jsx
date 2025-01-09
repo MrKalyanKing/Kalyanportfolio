@@ -1,11 +1,12 @@
 import React, { useState } from "react";
 import { User, LogOut } from "lucide-react";
+import dp from '../assets/kalyanprofile.jpg'
 export function Settings() {
   const [profileData, setProfileData] = useState({
-    name: "Vbm Coder",
-    role: "web developer",
-    phone: "+91-0123456789",
-    email: "youtube@vbmcoder.com",
+    name: "Kalyan Badhavath",
+    role: " Full Stack Web Developer",
+    phone: "+91-9392491012",
+    email: "badhavathkalyan08@gmail.com",
   });
   const handleSave = (e) => {
     e.preventDefault();
@@ -23,7 +24,7 @@ export function Settings() {
             <div className="w-1/3">
               <div className="relative">
                 <img
-                  src="https://images.unsplash.com/photo-1633332755192-727a05c4013d?w=800&auto=format&fit=crop&q=60&ixlib=rb-4.0.3"
+                  src={dp}
                   alt="Profile"
                   className="w-full h-48 object-cover rounded-lg"
                 />
@@ -80,7 +81,7 @@ export function Settings() {
                 </div>
                 <button
                   type="submit"
-                  className="bg-red-400 text-white px-8 py-2 rounded-lg hover:bg-red-500"
+                  className="bg-red-400 text-white px-5 py-2 rounded-lg hover:bg-red-500"
                 >
                   Save
                 </button>
@@ -91,7 +92,7 @@ export function Settings() {
         <div className="absolute top-8 right-8 bg-white p-4 rounded-2xl shadow-lg">
           <div className="flex items-center justify-between gap-8">
             <div>
-              <h3 className="text-lg font-semibold mb-1">My Account</h3>
+              <h3 className="text-lg font-semibold mb-1 ">My Account</h3>
               <p className="text-gray-600">Active Account</p>
               <p className="text-gray-600">Email</p>
             </div>

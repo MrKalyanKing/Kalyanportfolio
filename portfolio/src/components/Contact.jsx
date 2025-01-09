@@ -33,7 +33,7 @@ const Contact = () => {
   };
 
   const handleErr=()=>{
-    toast.error("Contact failed to add!", {
+    toast.error("Response Sent is Failed!", {
       position: "bottom-right",
       autoClose: 5000, // Close after 5 seconds
       hideProgressBar: false,
@@ -46,7 +46,7 @@ const Contact = () => {
   }
 
   const handleSucess=()=>{
-    toast.success("Contact added successfully!", {
+    toast.success("Response is Sent  Successfully!", {
       position: "bottom-right",
       autoClose: 5000, // Close after 5 seconds
       hideProgressBar: false,
@@ -96,6 +96,39 @@ const Contact = () => {
   } finally {
     setLoading(false);
   }
+
+  // sending an email service
+  
+  const payload = {
+    name: form.name,
+    email: form.email,
+    description: form.description,
+  };
+   
+  try {
+    // Send the email
+    const emailResponse = await axios.post(`http://localhost:3000/api/sendemail`, payload);
+    console.log("Email Response: ", emailResponse.data);
+
+    if (emailResponse.data.success) {
+      //alert("Report submitted and email sent successfully!");
+      // Reset form data
+      setForm({
+        name: "",
+        email: "",
+        description:""
+      });
+      
+    } else {
+      alert("Error sending email");
+    }
+  } catch (error) {
+    console.error("Error during email submission: ", error);
+    
+  }
+
+
+  //  closing an email service
   
   };
   

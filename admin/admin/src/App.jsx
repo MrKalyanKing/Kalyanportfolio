@@ -8,6 +8,7 @@ import Experience from "./components/Experience";
 import TechStack from "./components/TechStack";
 
 import Editcon from "./components/Editcon";
+import LoginPopUp from "./components/LoginPage/Login";
 const App = ()=> {
   return (
     <Router>
@@ -21,6 +22,7 @@ const App = ()=> {
             <Route path="/experience" element={<Experience/>} />
             <Route path="/skill" element={<TechStack/>}/>
             <Route path="/contacts" element={<Editcon/>}/>
+            <Route path="/login" element={<LoginPopUp/>}/>
             {/* Add other routes as needed */}
           </Routes>
         </main>

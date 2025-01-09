@@ -1,6 +1,6 @@
 import express ,{ Router} from "express";
 import multer from "multer";
-import  { projectfetch, addproject} from "../Controllers/projectadd.js";
+import  { projectfetch, addproject, deleteproject} from "../Controllers/projectadd.js";
 import { login, register } from "../Controllers/UserAuth.js";
 import {addexpereince,  deletework,  workfetch } from "../Controllers/Expererince.js";
 import {techstack,  techfetch } from "../Controllers/techstack.js";
@@ -38,4 +38,5 @@ router.get('/show/skill',fetchskill)
 //delete
 router.delete('/delete/:id',deletecontact)
 router.delete('/delete/work/:id',deletework)
+router.delete('/delete/project/:id',deleteproject)
 export default router

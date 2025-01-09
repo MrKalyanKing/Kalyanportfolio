@@ -64,7 +64,18 @@ const projectfetch = async (req, res) => {
   }
 };
 
+const deleteproject=async (req,res)=>{
+   let {id} =req.params
+   console.log("Received Id at backend",id)
+   try{
+     const deletes = await projectmodel.findByIdAndDelete(id)
+     res.status(201).json({success:true,message:"Project was deleted",deletes:deletes})
+   } catch(er){
+    res.status(500).json({success:true,message:"Project was not deleted"})
 
-export { addproject , projectfetch };
+   }
+}
+
+export { addproject , projectfetch,deleteproject };
 
 

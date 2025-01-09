@@ -27,11 +27,11 @@ export function Sidebar() {
               label: "Dashboard",
               path: "/",
             },
-            {
-              icon: BookOpen,
-              label: "Testimonials",
-              path: "/blogs",
-            },
+            // {
+            //   icon: BookOpen,
+            //   label: "Testimonials",
+            //   path: "/blogs",
+            // },
             {
               icon: FolderKanban,
               label: "Projects",
@@ -42,11 +42,11 @@ export function Sidebar() {
               label: "Expereince",
               path: "/experience",
             },
-            {
-              icon: Code,
-              label: "Technology",
-              path: "/gallery",
-            },
+            // {
+            //   icon: Code,
+            //   label: "Technology",
+            //   path: "/gallery",
+            // },
             // {
             //     icons:FileChartColumnIncreasing,
             //     label:'Skills',
@@ -64,9 +64,14 @@ export function Sidebar() {
             },
             {
               icon: Settings,
-              label: "Settings",
+              label: "Profile",
               path: "/settings",
             },
+            // {
+            //   icon:'',
+            //   label:"LogOut",
+            //   path:"/logout"
+            // }
           ].map((item) => (
             <li key={item.label}>
               <Link
@@ -83,3 +88,4 @@ export function Sidebar() {
     </aside>
   );
 }
+// 
