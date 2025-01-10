@@ -40,12 +40,12 @@ const About = () => {
         <h2 className={styles.sectionHeadText}>Overview.</h2>
       </motion.div>
         {/* Social Media and Download Resume Section */}
-        <div className="flex flex-col gap-5 mt-8 mb-20">
+        <div className="flex flex-col-6 gap-5 mt-8 mb-20">
             {/* Download Resume Button */}
             <a
               href={pdf}
               download
-              className="bg-[#915EFF] text-white px-6 py-3 rounded-lg shadow-lg hover:bg-[#7A4DE7] transition duration-300 ease-in-out cursor-pointer"
+              className="bg-[#27f4f8] text-white px-6 py-3 rounded-lg shadow-lg hover:bg-[#7A4DE7] transition duration-300 ease-in-out cursor-pointer"
             >
               Download Resume
             </a>
