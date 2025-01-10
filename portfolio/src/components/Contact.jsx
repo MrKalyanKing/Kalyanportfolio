@@ -70,7 +70,7 @@ const Contact = () => {
   
 
    try {
-    let response = await axios.post("http://localhost:3000/api/contact", formData, {
+    let response = await axios.post("https://kalyanportfolio.onrender.com/api/contact", formData, {
       headers: { "Content-Type": "application/json" },
     });
   
@@ -107,7 +107,7 @@ const Contact = () => {
    
   try {
     // Send the email
-    const emailResponse = await axios.post(`http://localhost:3000/api/sendemail`, payload);
+    const emailResponse = await axios.post(`https://kalyanportfolio.onrender.com/api/sendemail`, payload);
     console.log("Email Response: ", emailResponse.data);
 
     if (emailResponse.data.success) {

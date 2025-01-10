@@ -36,7 +36,7 @@ const ProjectCard = ({
       window.removeEventListener("resize", handleResize);
     };
   }, []);
-  const fullImageUrl = `http://localhost:3000/uploads/${image}`
+  const fullImageUrl = `https://kalyanportfolio.onrender.com/uploads/${image}`
   return (
     <motion.div variants={slideIn("up", "spring", index * 0.5, 0.75)}>
       <div
@@ -138,7 +138,7 @@ const Works = () => {
   // Fetch projects from the backend
   const fetchProjects = async () => {
     try {
-      const response = await axios.get("http://localhost:3000/api/show/project");
+      const response = await axios.get("https://kalyanportfolio.onrender.com/api/show/project");
       if (response.data.success && Array.isArray(response.data.project)) {
         setProjects(response.data.project);
         //handleSuccess();
